@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HCM.Data\HCM.Data.csproj" />
+    <ProjectReference Include="..\HCM.Services.Mapping\HCM.Services.Mapping.csproj" />
+  </ItemGroup>
+
 </Project>

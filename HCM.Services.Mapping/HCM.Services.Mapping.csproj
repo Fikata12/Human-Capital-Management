@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HCM.Data.Models\HCM.Data.Models.csproj" />
+    <ProjectReference Include="..\HCM.Services.Models\HCM.Services.Models.csproj" />
+    <ProjectReference Include="..\HCM.Web.ViewModels\HCM.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
