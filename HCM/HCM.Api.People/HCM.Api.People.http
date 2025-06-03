@@ -1,0 +1,6 @@
+@HCM.Api.People_HostAddress = http://localhost:5118
+
+GET {{HCM.Api.People_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
