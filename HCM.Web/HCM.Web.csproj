@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\HCM.Api.Auth\HCM.Api.Auth.csproj" />
     <ProjectReference Include="..\HCM.Api.People\HCM.Api.People.csproj" />
-    <ProjectReference Include="..\HCM.Services\HCM.Services.csproj" />
   </ItemGroup>
 
 </Project>
