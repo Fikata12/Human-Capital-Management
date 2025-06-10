@@ -1,6 +1,5 @@
 using HCM.Data;
 using Microsoft.EntityFrameworkCore;
-
 using HCM.Data.Interceptors;
 
 namespace HCM.Web
@@ -13,13 +12,14 @@ namespace HCM.Web
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            builder.Services.AddDbContext<HcmDbContext>((sp, options) =>
-            options.UseSqlServer(connectionString)
-            .AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
+            //Uncomment to apply migrations
+
+            //builder.Services.AddDbContext<HcmDbContext>((sp, options) =>
+            //options.UseSqlServer(connectionString)
+            //.AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
+            //builder.Services.AddSingleton<SoftDeleteInterceptor>();
 
             builder.Services.AddControllersWithViews();
-
-            builder.Services.AddSingleton<SoftDeleteInterceptor>();
 
             var app = builder.Build();
 
