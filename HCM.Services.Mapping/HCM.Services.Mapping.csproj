@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HCM.Data.Models\HCM.Data.Models.csproj" />
     <ProjectReference Include="..\HCM.Services.Models\HCM.Services.Models.csproj" />
     <ProjectReference Include="..\HCM.Web.ViewModels\HCM.Web.ViewModels.csproj" />

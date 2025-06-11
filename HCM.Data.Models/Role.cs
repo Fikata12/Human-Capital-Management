@@ -7,6 +7,7 @@ namespace HCM.Data.Models
     {
         public Role()
         {
+            Id = Guid.NewGuid();
             UsersRoles = new HashSet<UserRole>();
         }
 

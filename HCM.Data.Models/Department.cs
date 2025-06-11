@@ -9,6 +9,7 @@ namespace HCM.Data.Models
     {
         public Department()
         {
+            Id = Guid.NewGuid();
             People = new HashSet<Person>();
         }
 
