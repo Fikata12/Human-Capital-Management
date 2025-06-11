@@ -26,6 +26,8 @@ namespace HCM.Data.Models
         [ForeignKey(nameof(Person))]
         public Guid? PersonId { get; set; }
 
+        public bool IsActive { get; set; }
+
         public virtual Person? Person { get; set; }
         public virtual ICollection<UserRole> UsersRoles { get; set; }
     }
