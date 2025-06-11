@@ -1,0 +1,30 @@
+﻿@using System.Security.Claims
+
+<ul class="navbar-nav ms-auto">
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <li class="nav-item px-1">
+            <form class="d-inline" method="post" asp-controller="Account" asp-action="Logout">
+                <button type="submit" class="nav-link btn btn-link text-dark p-0 border-0" style="font-size: 1.2rem;">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item px-1">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">
+                <i class="bi bi-person-plus" style="font-size: 1.2rem;"></i>
+                <span>Register</span>
+            </a>
+        </li>
+        <li class="nav-item px-1">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
+                <i class="bi bi-box-arrow-in-right" style="font-size: 1.2rem;"></i>
+                <span>Login</span>
+            </a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,41 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="d-flex align-items-center justify-content-center" style="min-height:65vh;">
+    <div class="w-100" style="max-width:420px;">
+        <div class="border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h2 class="mb-3 fw-bold text-center text-primary" style="letter-spacing:1px;">
+                Sign in to <span class="text-dark">HCM</span>
+            </h2>
+            <p class="text-center text-muted mb-4 fs-6">
+                Enter your credentials to access the platform.
+            </p>
+            <form asp-action="Login" method="post" autocomplete="off">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control form-control-lg rounded-pill" autocomplete="username" />
+                    <span asp-validation-for="Username" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control form-control-lg rounded-pill" autocomplete="current-password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">Login</button>
+                </div>
+                <div class="text-center">
+                    <span class="text-muted">Don't have an account?</span>
+                    <a asp-action="Register" class="ms-1">Register</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

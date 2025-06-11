@@ -1,0 +1,51 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="d-flex align-items-center justify-content-center mt-5" style="min-height:65vh;">
+    <div class="w-100" style="max-width:420px;">
+        <div class="border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h2 class="mb-3 fw-bold text-center text-primary" style="letter-spacing:1px;">
+                Create your <span class="text-dark">HCM</span> account
+            </h2>
+            <p class="text-center text-muted mb-4 fs-6">
+                Fill in your details to get started.
+            </p>
+            <form asp-action="Register" method="post" autocomplete="off">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control form-control-lg rounded-pill" autocomplete="username" />
+                    <span asp-validation-for="Username" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control form-control-lg rounded-pill" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control form-control-lg rounded-pill" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control form-control-lg rounded-pill" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                </div>
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">Register</button>
+                </div>
+                <div class="text-center">
+                    <span class="text-muted">Already have an account?</span>
+                    <a asp-action="Login" class="ms-1">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

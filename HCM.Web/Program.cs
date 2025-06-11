@@ -1,6 +1,9 @@
 using HCM.Data;
 using Microsoft.EntityFrameworkCore;
 using HCM.Data.Interceptors;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using HCM.Web.Clients.Contracts;
+using HCM.Web.Clients;
 
 namespace HCM.Web
 {
@@ -10,14 +13,24 @@ namespace HCM.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
             //Uncomment to apply migrations
-
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             //builder.Services.AddDbContext<HcmDbContext>((sp, options) =>
             //options.UseSqlServer(connectionString)
             //.AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
             //builder.Services.AddSingleton<SoftDeleteInterceptor>();
+
+            builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7039");
+            });
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                });
 
             builder.Services.AddControllersWithViews();
 
@@ -34,6 +47,7 @@ namespace HCM.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
