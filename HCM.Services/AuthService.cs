@@ -92,6 +92,8 @@ namespace HCM.Services
         public async Task<UserInfoDto?> GetUserInfoAsync(Guid userId)
         {
             var user = await context.Users
+                .Include(u => u.Person)
+                .ThenInclude(p => p.Department)
                 .Include(u => u.UsersRoles)
                 .ThenInclude(ur => ur.Role)
                 .FirstOrDefaultAsync(u => u.Id == userId);

@@ -19,6 +19,7 @@ namespace HCM.Web
             //options.UseSqlServer(connectionString)
             //.AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
             //builder.Services.AddSingleton<SoftDeleteInterceptor>();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
             {

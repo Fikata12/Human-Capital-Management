@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace HCM.Api.Auth.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
@@ -45,7 +45,7 @@ namespace HCM.Api.Auth.Controllers
 
         [Authorize]
         [HttpGet("profile")]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 

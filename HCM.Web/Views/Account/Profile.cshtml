@@ -1,0 +1,56 @@
+﻿@model UserInfoDto
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="d-flex align-items-center justify-content-center" style="min-height:65vh;">
+    <div class="w-100" style="max-width:480px;">
+        <div class="border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h2 class="mb-3 fw-bold text-center text-primary" style="letter-spacing:1px;">
+                My <span class="text-dark">Profile</span>
+            </h2>
+            <p class="text-center text-muted mb-4 fs-6">
+                Your account details
+            </p>
+            <dl class="row mb-0">
+                <dt class="col-5 text-end text-secondary">Username:</dt>
+                <dd class="col-7">@Model.Username</dd>
+
+                <dt class="col-5 text-end text-secondary">Email:</dt>
+                <dd class="col-7">@Model.Email</dd>
+
+                <dt class="col-5 text-end text-secondary">First Name:</dt>
+                <dd class="col-7">
+                    @(string.IsNullOrWhiteSpace(Model.FirstName) ? "No information" : Model.FirstName)
+                </dd>
+
+                <dt class="col-5 text-end text-secondary">Last Name:</dt>
+                <dd class="col-7">
+                    @(string.IsNullOrWhiteSpace(Model.LastName) ? "No information" : Model.LastName)
+                </dd>
+
+                <dt class="col-5 text-end text-secondary">Job Title:</dt>
+                <dd class="col-7">
+                    @(string.IsNullOrWhiteSpace(Model.JobTitle) ? "No information" : Model.JobTitle)
+                </dd>
+
+                <dt class="col-5 text-end text-secondary">Salary:</dt>
+                <dd class="col-7">
+                    @(Model.Salary > 0 ? $"{Model.Salary:C}" : "No information")
+                </dd>
+
+                <dt class="col-5 text-end text-secondary">Department:</dt>
+                <dd class="col-7">
+                    @(string.IsNullOrWhiteSpace(Model.Department) ? "No information" : Model.Department)
+                </dd>
+
+                <dt class="col-5 text-end text-secondary">Roles:</dt>
+                <dd class="col-7">
+                    @(Model.Roles != null && Model.Roles.Any()
+                        ? string.Join(", ", Model.Roles)
+                        : "No information")
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>

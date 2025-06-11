@@ -6,17 +6,18 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HCM.Web.Clients.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HCM.Web.Controllers
 {
 
     public class AccountController : Controller
     {
-        private readonly IAuthApiClient authApi;
+        private readonly IAuthApiClient authApiClient;
 
-        public AccountController(IAuthApiClient authApi)
+        public AccountController(IAuthApiClient authApiClient)
         {
-            this.authApi = authApi;
+            this.authApiClient = authApiClient;
         }
 
         [HttpGet]
@@ -34,13 +35,21 @@ namespace HCM.Web.Controllers
                 return View(model);
             }
 
-            var response = await authApi.LoginAsync(model.Username, model.Password);
+            var response = await authApiClient.LoginAsync(model.Username, model.Password);
 
             if (!response.Success || response.Token == null)
             {
                 ModelState.AddModelError("", response.Message ?? "Invalid login.");
                 return View(model);
             }
+
+            Response.Cookies.Append("jwt-token", response.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(60)
+            });
 
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(response.Token);
@@ -58,7 +67,10 @@ namespace HCM.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            Response.Cookies.Delete("jwt-token");
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -83,13 +95,21 @@ namespace HCM.Web.Controllers
                 Password = model.Password
             };
 
-            var response = await authApi.RegisterAsync(dto);
+            var response = await authApiClient.RegisterAsync(dto);
 
             if (!response.Success || response.Token == null)
             {
                 ModelState.AddModelError("", response.Message ?? "Registration failed.");
                 return View(model);
             }
+
+            Response.Cookies.Append("jwt-token", response.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(60)
+            });
 
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.ReadJwtToken(response.Token);
@@ -103,6 +123,19 @@ namespace HCM.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-    }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userInfo = await authApiClient.GetCurrentUserInfoAsync();
+
+            if (userInfo == null)
+            {
+                return NotFound();
+            }
+
+            return View(userInfo); 
+        }
+    }
 }

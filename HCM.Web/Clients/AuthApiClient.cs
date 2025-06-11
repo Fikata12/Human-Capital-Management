@@ -1,15 +1,26 @@
 ﻿using HCM.Services.Models.Auth;
 using HCM.Web.Clients.Contracts;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace HCM.Web.Clients
 {
     public class AuthApiClient : IAuthApiClient
     {
         private readonly HttpClient httpClient;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AuthApiClient(HttpClient httpClient)
+        public AuthApiClient(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             this.httpClient = httpClient;
+            this.httpContextAccessor = httpContextAccessor;
+        }
+
+        private void AddJwtTokenHeader()
+        {
+            var token = httpContextAccessor.HttpContext?.Request.Cookies["jwt-token"];
+
+            httpClient.DefaultRequestHeaders.Authorization = token != null ? new AuthenticationHeaderValue("Bearer", token) : null;
         }
 
         public async Task<LoginResponseDto> LoginAsync(string username, string password)
@@ -54,6 +65,8 @@ namespace HCM.Web.Clients
 
         public async Task<UserInfoDto?> GetCurrentUserInfoAsync()
         {
+            AddJwtTokenHeader();
+
             var response = await httpClient.GetAsync("/api/auth/profile");
 
             if (!response.IsSuccessStatusCode)
