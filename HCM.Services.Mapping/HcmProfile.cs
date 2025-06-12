@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using HCM.Data.Models;
-using HCM.Services.Models.Auth;
+using HCM.Services.Models.Department;
+using HCM.Services.Models.Person;
+using HCM.Services.Models.User;
 
 namespace HCM.Services.Mapping
 {
@@ -15,6 +17,11 @@ namespace HCM.Services.Mapping
                 .ForMember(dest => dest.JobTitle, opt => opt.MapFrom(s => s.Person == null ? null : s.Person.JobTitle))
                 .ForMember(dest => dest.Salary, opt => opt.MapFrom(s => s.Person == null ? 0 : s.Person.Salary))
                 .ForMember(dest => dest.Department, opt => opt.MapFrom(s => s.Person == null ? null : s.Person.Department.Name));
+
+            CreateMap<Person, PersonDto>()
+           .ForMember(dest => dest.Department, opt => opt.MapFrom(src => src.Department.Name));
+
+            CreateMap<Department, DepartmentDto>();
         }
     }
 }

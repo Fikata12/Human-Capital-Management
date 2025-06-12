@@ -28,7 +28,7 @@
                         <li class="nav-item">
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">My Profile</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile">My Profile</a>
                             }
                         </li>
                     </ul>
@@ -51,6 +51,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <partial name="_NotificationScriptsPartial" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>

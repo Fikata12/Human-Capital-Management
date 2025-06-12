@@ -1,8 +1,8 @@
-﻿using HCM.Services.Models.Auth;
+﻿using HCM.Services.Models.User;
 
 namespace HCM.Services.Contracts
 {
-    public interface IAuthService
+    public interface IUserService
     {
         Task<LoginResponseDto> LoginAsync(string username, string password);
         Task<LoginResponseDto> RegisterAsync(RegisterRequestDto dto);

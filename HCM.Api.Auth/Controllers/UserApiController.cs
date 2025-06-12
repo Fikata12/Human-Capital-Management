@@ -1,5 +1,5 @@
 ﻿using HCM.Services.Contracts;
-using HCM.Services.Models.Auth;
+using HCM.Services.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -7,20 +7,20 @@ using System.Security.Claims;
 namespace HCM.Api.Auth.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
-    public class AuthController : ControllerBase
+    [Route("api/user")]
+    public class UserApiController : ControllerBase
     {
-        private readonly IAuthService authService;
+        private readonly IUserService userService;
 
-        public AuthController(IAuthService authService)
+        public UserApiController(IUserService userService)
         {
-            this.authService = authService;
+            this.userService = userService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var result = await authService.LoginAsync(dto.Username, dto.Password);
+            var result = await userService.LoginAsync(dto.Username, dto.Password);
 
             if (!result.Success)
             {
@@ -33,7 +33,7 @@ namespace HCM.Api.Auth.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
         {
-            var result = await authService.RegisterAsync(dto);
+            var result = await userService.RegisterAsync(dto);
 
             if (!result.Success)
             {
@@ -54,7 +54,7 @@ namespace HCM.Api.Auth.Controllers
                 return Unauthorized();
             }
 
-            var user = await authService.GetUserInfoAsync(Guid.Parse(userId));
+            var user = await userService.GetUserInfoAsync(Guid.Parse(userId));
 
             if (user == null)
             {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using HCM.Web.ViewModels.Account;
-using HCM.Services.Models.Auth;
+using HCM.Web.ViewModels.User;
+using HCM.Services.Models.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -10,12 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HCM.Web.Controllers
 {
-
-    public class AccountController : Controller
+    public class UserController : Controller
     {
         private readonly IAuthApiClient authApiClient;
 
-        public AccountController(IAuthApiClient authApiClient)
+        public UserController(IAuthApiClient authApiClient)
         {
             this.authApiClient = authApiClient;
         }
@@ -97,29 +96,13 @@ namespace HCM.Web.Controllers
 
             var response = await authApiClient.RegisterAsync(dto);
 
-            if (!response.Success || response.Token == null)
+            if (!response.Success)
             {
                 ModelState.AddModelError("", response.Message ?? "Registration failed.");
                 return View(model);
             }
 
-            Response.Cookies.Append("jwt-token", response.Token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddMinutes(60)
-            });
-
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(response.Token);
-
-            var claims = jwt.Claims.ToList();
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            TempData["Success"] = response.Message;
 
             return RedirectToAction("Index", "Home");
         }
@@ -135,7 +118,7 @@ namespace HCM.Web.Controllers
                 return NotFound();
             }
 
-            return View(userInfo); 
+            return View(userInfo);
         }
     }
 }

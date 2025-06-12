@@ -13,12 +13,6 @@ namespace HCM.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //Uncomment to apply migrations
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            //builder.Services.AddDbContext<HcmDbContext>((sp, options) =>
-            //options.UseSqlServer(connectionString)
-            //.AddInterceptors(sp.GetRequiredService<SoftDeleteInterceptor>()));
-            //builder.Services.AddSingleton<SoftDeleteInterceptor>();
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(client =>
@@ -26,11 +20,16 @@ namespace HCM.Web
                 client.BaseAddress = new Uri("https://localhost:7039");
             });
 
+            builder.Services.AddHttpClient<IPeopleApiClient, PeopleApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7140");
+            });
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
+                    options.LoginPath = "/User/Login";
+                    options.LogoutPath = "/User/Logout";
                 });
 
             builder.Services.AddControllersWithViews();

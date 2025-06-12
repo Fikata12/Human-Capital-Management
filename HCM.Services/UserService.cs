@@ -1,21 +1,22 @@
-﻿using HCM.Services.Models.Auth;
+﻿using HCM.Services.Models.User;
 using HCM.Data;
 using HCM.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using HCM.Services.Contracts;
 using static HCM.Common.GeneralApplicationConstants;
+using static HCM.Common.NotificationMessagesConstants.User;
 using AutoMapper;
 
 namespace HCM.Services
 {
-    public class AuthService : IAuthService
+    public class UserService : IUserService
     {
         private readonly HcmDbContext context;
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IPasswordHasher passwordHasher;
         private readonly IMapper mapper;
 
-        public AuthService(HcmDbContext context, IJwtTokenGenerator jwtTokenGenerator, IPasswordHasher passwordHasher, IMapper mapper)
+        public UserService(HcmDbContext context, IJwtTokenGenerator jwtTokenGenerator, IPasswordHasher passwordHasher, IMapper mapper)
         {
             this.context = context;
             this.jwtTokenGenerator = jwtTokenGenerator;
@@ -33,6 +34,11 @@ namespace HCM.Services
             if (user == null || !passwordHasher.Verify(password, user.PasswordHash))
             {
                 return new LoginResponseDto { Success = false, Message = "Invalid credentials" };
+            }
+
+            if (!user.IsActive)
+            {
+                return new LoginResponseDto { Success = false, Message = "Your account is inactive" };
             }
 
             var roles = user.UsersRoles.Select(ur => ur.Role.Name).ToList();
@@ -76,16 +82,10 @@ namespace HCM.Services
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            var roles = user.UsersRoles.Select(ur => employeeRole.Name).ToList();
-            var token = jwtTokenGenerator.GenerateToken(user, roles);
-
             return new LoginResponseDto
             {
                 Success = true,
-                Message = "Registration successful",
-                Token = token,
-                Username = user.Username,
-                Roles = roles
+                Message = SuccessfullyCreatedAccount
             };
         }
 

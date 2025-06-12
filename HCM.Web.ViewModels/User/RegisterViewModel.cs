@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static HCM.Common.ValidationConstants.User;
 
-namespace HCM.Web.ViewModels.Account
+namespace HCM.Web.ViewModels.User
 {
     public class RegisterViewModel
     {

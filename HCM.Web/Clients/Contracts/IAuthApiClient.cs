@@ -1,4 +1,4 @@
-﻿using HCM.Services.Models.Auth;
+﻿using HCM.Services.Models.User;
 
 namespace HCM.Web.Clients.Contracts
 {

@@ -1,4 +1,4 @@
-﻿namespace HCM.Services.Models.Auth
+﻿namespace HCM.Services.Models.User
 {
     public class UserInfoDto
     {

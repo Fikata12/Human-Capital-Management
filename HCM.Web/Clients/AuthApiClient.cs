@@ -1,4 +1,4 @@
-﻿using HCM.Services.Models.Auth;
+﻿using HCM.Services.Models.User;
 using HCM.Web.Clients.Contracts;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
@@ -27,7 +27,7 @@ namespace HCM.Web.Clients
         {
             var dto = new LoginRequestDto { Username = username, Password = password };
 
-            var response = await httpClient.PostAsJsonAsync("/api/auth/login", dto);
+            var response = await httpClient.PostAsJsonAsync("/api/user/login", dto);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -46,7 +46,7 @@ namespace HCM.Web.Clients
 
         public async Task<LoginResponseDto> RegisterAsync(RegisterRequestDto dto)
         {
-            var response = await httpClient.PostAsJsonAsync("/api/auth/register", dto);
+            var response = await httpClient.PostAsJsonAsync("/api/user/register", dto);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -67,7 +67,7 @@ namespace HCM.Web.Clients
         {
             AddJwtTokenHeader();
 
-            var response = await httpClient.GetAsync("/api/auth/profile");
+            var response = await httpClient.GetAsync("/api/user/profile");
 
             if (!response.IsSuccessStatusCode)
             {
