@@ -1,57 +1,33 @@
-Human Capital Management
-Human Capital Management (HCM) is a modular, open-source platform for managing employees, departments, roles, and organizational structure. Built with .NET 8, SQL Server, and a clean API-first architecture. The solution targets small and mid-sized organizations needing a practical and extensible HR system.
+# Human Capital Management
 
-Features
-Employee CRUD (Create, Read, Update, Delete)
+.NET 8 application for HR management with REST APIs, business logic, and optional ASP.NET Core MVC frontend.
 
-Departments with manager assignment
+## Project Structure
 
-Roles and permissions (custom, not using ASP.NET Identity)
+- `Api/`  
+  - `HCM.Api.Auth/` — Auth endpoints (login, roles, JWT)  
+  - `HCM.Api.People/` — CRUD for people  
+- `Data/`  
+  - `HCM.Data/` — DbContext, seeding, config  
+  - `HCM.Data.Models/` — Entity models  
+- `Services/`  
+  - `HCM.Services/` — Business logic  
+  - `HCM.Services.Mapping/` — AutoMapper profiles  
+- `Web/`  
+  - `HCM.Web/` — MVC UI (optional)  
+  - `HCM.Web.ViewModels/` — ViewModels  
+- `Tests/`  
+  - `HCM.Services.Tests/` — Service tests  
+  - `HCM.Api.Tests/` — API tests  
+- `HCM.Common/` — Constants, enums, validation  
 
-Role-based access via JWT tokens
+## Features
 
-User authentication API
-
-Soft-delete for main entities
-
-Many-to-many users ↔ roles
-
-Initial data seeding (roles, departments, users)
-
-Clear separation: API, service, data, presentation layers
-
-XML export for reports (planned)
-
-Tech Stack
-.NET 8 (C#)
-
-ASP.NET Core MVC (Web UI)
-
-ASP.NET Core Web API (Auth and People APIs)
-
-SQL Server (GUIDs as IDs)
-
-AutoMapper
-
-Solution Structure
-pgsql
-Копиране
-HCM.sln
-│
-├── Api/
-│   ├── HCM.Api.Auth/          → Authentication, roles, JWT
-│   └── HCM.Api.People/        → CRUD for employees
-│
-├── Data/
-│   ├── HCM.Data/              → DbContext, seeding, config
-│   └── HCM.Data.Models/       → Entities: Person, User, Department, Role, UserRole
-│
-├── Services/
-│   ├── HCM.Services/          → Business logic
-│   └── HCM.Services.Mapping/  → AutoMapper profiles
-│
-├── Web/
-│   ├── HCM.Web/               → ASP.NET Core MVC UI
-│   └── HCM.Web.ViewModels/    → ViewModels for the UI
-│
-└── HCM.Common/                → Constants, enums, validators
+- Custom role-based authorization (no ASP.NET Identity)
+- People CRUD, soft delete, restore
+- Many-to-many: Users ↔ Roles
+- Departments with manager assignment
+- Static role seeding
+- RESTful APIs, separated logic layers
+- Unit/integration tests (xUnit)
+- Optional ASP.NET Core MVC UI
